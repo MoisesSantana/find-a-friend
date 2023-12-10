@@ -2,13 +2,13 @@ import { UserAlreadyExistsError } from '@/errors/user-already-exists-error';
 
 import { hash } from 'bcryptjs';
 
-import { RegisterRequestDTO } from '../dto/register-dto';
+import { RegisterRequestDTO, RegisterResponseDTO } from '../dto/register-dto';
 import { Repository } from '../repositories/repository';
 
 export class RegisterUserCase {
   constructor(private repository: Repository) {}
 
-  async execute({ name, email, password }: RegisterRequestDTO) {
+  async execute({ name, email, password }: RegisterRequestDTO): Promise<RegisterResponseDTO> {
     const userAlreadyExists = await this.repository.findByEmail(email);
 
     if (userAlreadyExists) throw new UserAlreadyExistsError();
