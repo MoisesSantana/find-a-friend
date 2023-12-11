@@ -33,8 +33,8 @@ const petData = {
 
 describe('[Pet] Register', () => {
   beforeEach(async () => {
-    petRepository = new InMemoryPetRepository();
     orgRepository = new InMemoryOrgRepository();
+    petRepository = new InMemoryPetRepository(orgRepository);
     sut = new RegisterUseCase(petRepository, orgRepository);
 
     await orgRepository.create(orgData);

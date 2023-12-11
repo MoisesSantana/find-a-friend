@@ -28,4 +28,12 @@ export class InMemoryOrgRepository implements OrgRepository {
 
     return org ?? null;
   }
+
+  async findManyByCityAndUf(uf: string, city: string) {
+    const orgs = this.orgs.filter((org) => (
+      org.city.toLowerCase() === city.toLowerCase() && org.uf.toUpperCase() === uf.toUpperCase()
+    ));
+
+    return orgs;
+  }
 }
