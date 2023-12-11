@@ -17,6 +17,8 @@ export class RegisterUseCase {
 
     const org = await this.orgRepository.create({
       ...data,
+      uf: data.uf.toUpperCase(),
+      city: data.city.toLowerCase(),
       password: passwordHash,
     });
 
