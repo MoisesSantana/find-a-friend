@@ -14,4 +14,10 @@ export class InMemoryRepository {
     this.orgs.push(org);
     return org;
   }
+
+  async findByEmail(email: string) {
+    const org = this.orgs.find((org) => org.email === email);
+
+    return org ?? null;
+  }
 }
