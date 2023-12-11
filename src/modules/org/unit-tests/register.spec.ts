@@ -4,10 +4,10 @@ import { compare } from 'bcryptjs';
 
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { InMemoryRepository } from '../repositories/in-memory-repository';
-import { RegisterUseCase } from './register';
+import { InMemoryOrgRepository } from '../repositories/in-memory-repository';
+import { RegisterUseCase } from '../use-cases/register';
 
-let orgRepository: InMemoryRepository;
+let orgRepository: InMemoryOrgRepository;
 let sut: RegisterUseCase;
 
 const orgData = {
@@ -23,7 +23,7 @@ const orgData = {
 
 describe('[Org] Register', () => {
   beforeEach(() => {
-    orgRepository = new InMemoryRepository();
+    orgRepository = new InMemoryOrgRepository();
     sut = new RegisterUseCase(orgRepository);
   });
 

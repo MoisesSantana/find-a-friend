@@ -2,7 +2,9 @@ import { Org, Prisma } from '@prisma/client';
 
 import { randomUUID } from 'crypto';
 
-export class InMemoryRepository {
+import { OrgRepository } from './repository';
+
+export class InMemoryOrgRepository implements OrgRepository {
   public orgs: Org[] = [];
 
   async create(data: Prisma.OrgCreateInput) {
@@ -17,6 +19,12 @@ export class InMemoryRepository {
 
   async findByEmail(email: string) {
     const org = this.orgs.find((org) => org.email === email);
+
+    return org ?? null;
+  }
+
+  async findById(id: string) {
+    const org = this.orgs.find((org) => org.id === id);
 
     return org ?? null;
   }
