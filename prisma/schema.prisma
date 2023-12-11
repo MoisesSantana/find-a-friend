@@ -26,30 +26,19 @@ model Pet {
   org    Org    @relation(fields: [org_id], references: [id])
   org_id String
 
-  owner    User?   @relation(fields: [owner_id], references: [id])
-  owner_id String?
-
   @@map("pets")
-}
-
-model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
-
-  Pet Pet[]
-
-  @@map("users")
 }
 
 model Org {
   id      String @id @default(uuid())
   name    String
+  cep     String
   address String
+  uf      String
+  city    String
   phone   String
-
-  pets Pet[]
+  email   String @unique
+  pets    Pet[]
 
   @@map("orgs")
 }
