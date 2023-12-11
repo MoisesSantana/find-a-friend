@@ -16,7 +16,7 @@ const userData = {
   password: 'password',
 };
 
-describe('Register', () => {
+describe('[User] Register', () => {
   beforeEach(() => {
     repository = new InMemoryRepository();
     sut = new RegisterUserCase(repository);
