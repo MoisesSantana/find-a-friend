@@ -4,7 +4,7 @@ import { InMemoryOrgRepository } from '@/modules/org/repositories/in-memory-repo
 
 import { randomUUID } from 'node:crypto';
 
-import { PetRepository } from './repository';
+import { Filter, PetRepository } from './repository';
 
 export class InMemoryPetRepository implements PetRepository {
   public pets: Pet[] = [];
@@ -27,12 +27,44 @@ export class InMemoryPetRepository implements PetRepository {
 
   async findManyByCityAndUf(city: string, uf: string) {
     const orgs = await this.orgRepository.findManyByCityAndUf(city, uf);
-    const pets = this.pets.filter((pet) => {
-      return (
-        orgs.some((org: Org) => org.id === pet.org_id)
-      );
-    });
+    const pets = this.pets.filter((pet) => (
+      orgs.some((org: Org) => org.id === pet.org_id)
+    ));
 
     return pets;
+  }
+
+  async findManyByFilter(filter: Filter) {
+    const orgs = await this.orgRepository.findManyByCityAndUf(filter.uf, filter.city);
+    
+    let filteredPets: Pet[] = this.pets;
+
+    const filterByOrg = (pets: Pet[]) => (
+      pets.filter((pet) => orgs.some((org: Org) => org.id === pet.org_id))
+    );
+
+    const filterBySpecies = (pets: Pet[]) => (
+      filter.species ? pets.filter((pet) => pet.species === filter.species) : pets
+    );
+
+    const filterByBreed = (pets: Pet[]) => (
+      filter.breed ? pets.filter((pet) => pet.breed === filter.breed) : pets
+    );
+
+    const filterByGender = (pets: Pet[]) => (
+      filter.gender ? pets.filter((pet) => pet.gender === filter.gender) : pets
+    );
+
+    const filterByAge = (pets: Pet[]) => (
+      filter.age !== undefined ? pets.filter((pet) => pet.age === filter.age) : pets
+    );
+
+    filteredPets = filterByOrg(filteredPets);
+    filteredPets = filterBySpecies(filteredPets);
+    filteredPets = filterByBreed(filteredPets);
+    filteredPets = filterByGender(filteredPets);
+    filteredPets = filterByAge(filteredPets);
+
+    return filteredPets;
   }
 }
