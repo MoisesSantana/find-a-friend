@@ -13,4 +13,5 @@ export interface PetRepository {
   create(data: Prisma.PetUncheckedCreateInput): Promise<Pet>;
   findManyByCityAndUf(uf: string, city: string): Promise<Pet[]>;
   findManyByFilter(filter: Filter): Promise<Pet[]>;
+  findById(id: string): Promise<Pet | null>;
 }

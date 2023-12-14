@@ -14,6 +14,11 @@ export class InMemoryPetRepository implements PetRepository {
     this.orgRepository = orgRepository;
   }
 
+  async findById(id: string) {
+    const pet = this.pets.find((pet) => pet.id === id);
+    return pet ?? null;
+  }
+
   async create(data: Prisma.PetUncheckedCreateInput) {
     const pet = {
       ...data,
