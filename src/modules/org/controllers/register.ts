@@ -15,18 +15,17 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     address: z.string(),
     uf: z.string().length(2),
     city: z.string(),
-    password: z.string(),
+    password: z.string().min(6),
     phone: z.string().refine((phone) => phone.length === 11 || phone.length === 10, {
       message: 'Phone must have just number, total 10 or 11 digits, includes DDD',
     }),
     email: z.string().email(),
   });
-
+  
   const data = createOrgBodySchema.parse(request.body);
-
   try {
     const registerUseCase = makeRegisterUseCase();
-    registerUseCase.execute(data);
+    await registerUseCase.execute(data);
   } catch (error) {
     if (error instanceof UserAlreadyExistError)
       return reply.status(409).send({ message: error.message });
