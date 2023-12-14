@@ -4,5 +4,5 @@ export interface OrgRepository {
   create(data: Prisma.OrgCreateInput): Promise<Org>;
   findByEmail(email: string): Promise<Org | null>;
   findById(id: string): Promise<Org | null>;
-  findManyByCityAndUf(city: string, uf: string): Promise<Org[]>;
+  findManyByCityAndUf(uf: string, city: string): Promise<Org[]>;
 }

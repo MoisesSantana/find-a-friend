@@ -30,8 +30,8 @@ export class InMemoryPetRepository implements PetRepository {
     return pet;
   }
 
-  async findManyByCityAndUf(city: string, uf: string) {
-    const orgs = await this.orgRepository.findManyByCityAndUf(city, uf);
+  async findManyByCityAndUf(uf: string, city: string) {
+    const orgs = await this.orgRepository.findManyByCityAndUf(uf, city);
     const pets = this.pets.filter((pet) => (
       orgs.some((org: Org) => org.id === pet.org_id)
     ));
