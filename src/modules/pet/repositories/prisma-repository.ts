@@ -35,6 +35,9 @@ export class PrismaPetRepository implements PetRepository {
         breed: filter.breed,
         gender: filter.gender,
         age: filter.age,
+      },
+      include: {
+        org: true,
       }
     });
 
