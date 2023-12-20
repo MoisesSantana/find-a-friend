@@ -37,7 +37,16 @@ export class PrismaPetRepository implements PetRepository {
         age: filter.age,
       },
       include: {
-        org: true,
+        org: {
+          select: {
+            name: true,
+            phone: true,
+            cep: true,
+            address: true,
+            uf: true,
+            city: true,
+          }
+        },
       }
     });
 
