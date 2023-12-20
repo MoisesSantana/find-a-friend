@@ -7,10 +7,6 @@ import { z } from 'zod';
 import { makeRegisterUseCase } from '../factories/make-register-use-case';
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
-  const registerPetParamsSchema = z.object({
-    orgId: z.string().uuid(),
-  });
-  
   const registerPetBodySchema = z.object({
     species: z.string(),
     breed: z.string(),
@@ -19,10 +15,9 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   });
 
   const data = registerPetBodySchema.parse(request.body);
-  const { orgId } = registerPetParamsSchema.parse(request.params);
 
   const registerPetUseCase = makeRegisterUseCase();
-  await registerPetUseCase.execute({ ...data, orgId });
+  await registerPetUseCase.execute({ ...data, orgId: request.user.sub });
 
   return reply.status(201).send();
 }

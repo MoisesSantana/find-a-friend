@@ -17,13 +17,28 @@ export async function auth(request: FastifyRequest, reply: FastifyReply) {
   try {
     const authUseCase = makeAuthUseCase();
     const { org } = await authUseCase.execute(data);
-    console.log(org);
+
+    const token = await reply.jwtSign({}, {
+      sign: { sub: org.id.toString() }
+    });
+
+    const refreshToken = await reply.jwtSign({}, {
+      sign: { sub: org.id.toString(), expiresIn: '7d' }
+    });
+
+    return reply
+      .setCookie('refreshToken', refreshToken, {
+        path: '/',
+        secure: true,
+        sameSite: true,
+        httpOnly: true,
+      })
+      .status(200)
+      .send({ token });
   } catch (error) {
     if (error instanceof InvalidCredentialsError)
       return reply.status(401).send({ message: error.message });
 
     throw error;
   }
-
-  return reply.status(200).send();
 }
