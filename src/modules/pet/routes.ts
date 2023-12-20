@@ -1,11 +1,13 @@
 import { FastifyInstance } from 'fastify';
 
-export async function petRoutes(app: FastifyInstance) {
-  app.post('/org/:orgId/pet', () => {
-    console.log('register pet');
-  });
+import { details } from './controllers/details';
+import { filter } from './controllers/filter';
+import { register } from './controllers/register';
 
-  app.get('/pets', () => {
-    console.log('list pets');
-  });
+export async function petRoutes(app: FastifyInstance) {
+  app.post('/org/:orgId/pet', register);
+
+  app.get('/pets', filter);
+
+  app.get('/pets/:petId', details);
 }
